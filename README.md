@@ -23,9 +23,7 @@ Ek simple website jahan kisan seedha photo + daam daal ke apna product bech sake
 
 ## Tech Stack
 HTML + CSS + JavaScript | LocalStorage
-
-## Live Demo
-https://saloni040.github.io/Kisan-mandi/                                     
+                                   
 ## Made By
 Saloni - Team Sevak, Karnal, Haryana
 
