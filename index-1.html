@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KisanConnect | Farmer Marketplace</title>
+  <style>
+    :root{--green:#176b43;--green2:#e8f4ec;--ink:#183126;--muted:#68776f;--line:#dce7df;--bg:#f5f8f5;--white:#fff;--orange:#f3a43b}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+    button,input,select{font:inherit}button{cursor:pointer}
+    .wrap{max-width:1120px;margin:auto;padding:20px}
+    header{background:linear-gradient(120deg,#145b39,#268454);color:white;padding:25px;border-radius:18px;display:flex;justify-content:space-between;align-items:center;gap:15px;box-shadow:0 8px 24px #164b2c20}
+    header h1{margin:7px 0;font-size:30px}header p{margin:0;opacity:.85}.logo{font-size:48px}
+    .eyebrow{font-size:11px;letter-spacing:2px;opacity:.8}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:17px 0}
+    .stat,.panel,.crop-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:16px}
+    .stat .big{font-size:24px;font-weight:700;margin:7px 0}.muted{color:var(--muted);font-size:13px}
+    nav{display:flex;gap:8px;overflow-x:auto;padding:3px 0 13px}
+    nav button{border:1px solid var(--line);background:white;border-radius:10px;padding:11px 15px;white-space:nowrap;color:var(--ink)}
+    nav button.active{background:var(--green);color:white;border-color:var(--green)}
+    .page{display:none}.page.active{display:block}
+    h2{font-size:22px;margin:5px 0 6px}h3{font-size:16px;margin:0 0 10px}
+    .intro{margin-bottom:16px}.market-prices,.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .price{background:white;border:1px solid var(--line);padding:14px;border-radius:12px}.price .emoji{font-size:28px}
+    .price strong{display:block;font-size:19px;margin-top:6px}
+    .hero-note{background:var(--green2);border-radius:14px;padding:17px;margin:15px 0}
+    .hero-note button,.primary{background:var(--green);color:white;border:0;border-radius:9px;padding:11px 15px;font-weight:700}
+    .toolbar{display:flex;gap:10px;margin:14px 0}.field{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:white;color:var(--ink)}
+    .crop-card{padding:12px}.crop-image{height:105px;border-radius:10px;background:#edf5ee;display:grid;place-items:center;font-size:48px}
+    .crop-card h3{margin:11px 0 5px}.crop-card .price-tag{font-weight:bold;font-size:19px;margin:9px 0}
+    .pill{display:inline-block;border-radius:20px;background:var(--green2);color:var(--green);padding:5px 9px;font-size:11px}
+    .crop-card button{width:100%;margin-top:12px}
+    form{display:grid;gap:13px;max-width:600px}label{font-size:13px;font-weight:700}label input,label select{display:block;margin-top:6px}
+    .order{background:white;border:1px solid var(--line);padding:15px;border-radius:12px;margin:10px 0}
+    .order-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .secondary{background:white;border:1px solid var(--line);border-radius:9px;padding:9px 12px}
+    .success{color:#176b43;font-size:13px}.warning{background:#fff6e7;padding:12px;border-radius:10px;color:#76521c;font-size:13px;line-height:1.5}
+    .transaction{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);gap:10px}
+    footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 0 8px}
+    @media(min-width:700px){.market-prices{grid-template-columns:repeat(4,1fr)}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:480px){.wrap{padding:12px}header{padding:19px}header h1{font-size:25px}.logo{font-size:38px}.stats{gap:7px}.stat{padding:11px}.stat .big{font-size:19px}.toolbar{flex-direction:column}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">DIGITAL AGRICULTURE PLATFORM</div>
+      <h1>KisanConnect</h1>
+      <p>Kisan ka maal · Seedha bazaar</p>
+      <p style="margin-top:13px;font-size:13px">Welcome, Farmer 👋 &nbsp; <span style="background:#ffffff25;padding:5px 9px;border-radius:20px">Demo account</span></p>
+    </div>
+    <div class="logo">🌱</div>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><div>🛒</div><div class="big" id="statProducts">3</div><div class="muted">Products listed</div></div>
+    <div class="stat"><div>📦</div><div class="big" id="statOrders">2</div><div class="muted">Orders received</div></div>
+    <div class="stat"><div>💰</div><div class="big" id="statSales">₹0</div><div class="muted">Demo sales</div></div>
+  </section>
+
+  <nav>
+    <button class="active" data-page="home">🏠 Home</button>
+    <button data-page="market">🛒 Marketplace</button>
+    <button data-page="sell">➕ Sell crop</button>
+    <button data-page="orders">📦 Orders</button>
+    <button data-page="payments">💰 Payments</button>
+  </nav>
+
+  <main>
+    <section id="home" class="page active">
+      <div class="intro"><h2>Farmer Dashboard</h2><div class="muted">Your farm business at a glance.</div></div>
+      <div class="hero-note">
+        <h3>🌾 Your digital mandi</h3>
+        <p class="muted">Connect with buyers, compare offers and sell your harvest directly.</p>
+        <button onclick="showPage('market')">Explore marketplace →</button>
+      </div>
+      <h3>Sample market prices</h3>
+      <div class="market-prices">
+        <div class="price"><div class="emoji">🌾</div><b>Wheat</b><strong>₹2,425 <small class="muted">/ quintal</small></strong></div>
+        <div class="price"><div class="emoji">🌿</div><b>Mustard</b><strong>₹5,950 <small class="muted">/ quintal</small></strong></div>
+        <div class="price"><div class="emoji">🌽</div><b>Maize</b><strong>₹2,225 <small class="muted">/ quintal</small></strong></div>
+        <div class="price"><div class="emoji">🧅</div><b>Onion</b><strong>₹2,000 <small class="muted">/ quintal</small></strong></div>
+      </div>
+      <p class="muted">Prices above are illustrative examples, not live mandi rates.</p>
+      <div class="panel" style="margin-top:16px">
+        <h3>How KisanConnect works</h3>
+        <div class="grid">
+          <div>📸 <b>List your crop</b><p class="muted">Add quantity and expected price.</p></div>
+          <div>🤝 <b>Connect with buyers</b><p class="muted">Receive direct enquiries and offers.</p></div>
+          <div>📋 <b>Confirm order</b><p class="muted">Agree on price and delivery terms.</p></div>
+          <div>💳 <b>Receive payment</b><p class="muted">Use a secure payment provider.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="market" class="page">
+      <div class="intro"><h2>🛒 Farmer Marketplace</h2><div class="muted">Browse crop listings and send an order request.</div></div>
+      <div class="toolbar">
+        <input id="search" class="field" placeholder="Search wheat, rice, mustard...">
+        <select id="filter" class="field"><option value="">All crops</option><option>Wheat</option><option>Rice</option><option>Mustard</option><option>Maize</option><option>Onion</option><option>Potato</option></select>
+        <select id="sort" class="field"><option value="default">Sort by</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select>
+      </div>
+      <div id="marketList" class="grid"></div>
+    </section>
+
+    <section id="sell" class="page">
+      <div class="intro"><h2>➕ Sell Your Crop</h2><div class="muted">Add your harvest details to publish a listing.</div></div>
+      <div class="panel">
+        <form id="sellForm">
+          <label>Crop name
+            <select id="cropName" class="field" required>
+              <option value="">Select crop</option><option>Wheat</option><option>Rice</option><option>Mustard</option><option>Maize</option><option>Onion</option><option>Potato</option><option>Other</option>
+            </select>
+          </label>
+          <label>Quantity (quintals)<input id="cropQty" class="field" type="number" min="1" placeholder="Example: 50" required></label>
+          <label>Expected price per quintal (₹)<input id="cropPrice" class="field" type="number" min="1" placeholder="Example: 2400" required></label>
+          <label>Village / District / State<input id="cropLocation" class="field" placeholder="Example: Sonipat, Haryana" required></label>
+          <label>Crop quality<select id="cropQuality" class="field"><option>Standard</option><option>Premium</option><option>Organic (certified)</option></select></label>
+          <button class="primary" type="submit">Publish crop listing</button>
+          <div id="sellMessage" class="success" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="orders" class="page">
+      <div class="intro"><h2>📦 Order Management</h2><div class="muted">Accept or decline buyer requests and update order status.</div></div>
+      <div id="orderList"></div>
+    </section>
+
+    <section id="payments" class="page">
+      <div class="intro"><h2>💰 Payments & Earnings</h2><div class="muted">Track completed demo orders.</div></div>
+      <div class="stat"><div class="muted">Demo completed sales</div><div class="big" id="earnings">₹0</div></div>
+      <div class="panel" style="margin-top:14px">
+        <h3>Payment methods for a live platform</h3>
+        <p>📲 <b>UPI / QR payment</b><br><span class="muted">Buyer pays through a supported payment gateway.</span></p>
+        <p>🏦 <b>Bank transfer</b><br><span class="muted">Settlement to a verified farmer bank account.</span></p>
+        <p>🧾 <b>Digital receipt</b><br><span class="muted">A transaction confirmation and order record.</span></p>
+      </div>
+      <div class="panel" style="margin-top:14px"><h3>Transaction history</h3><div id="transactions" class="muted">No completed transactions yet.</div></div>
+      <p class="warning" style="margin-top:14px">Demo only: this website does not collect bank details or transfer real money. A live version needs a secure backend, verified users and an authorised payment gateway.</p>
+    </section>
+  </main>
+  <footer>🌱 KisanConnect · Empowering Indian Farmers<br>Direct market · Fair prices · Digital payments</footer>
+</div>
+
+<script>
+  // Demo data. In a real app, products and orders should come from a secure server.
+  let products = [
+    {id:1,name:"Wheat",qty:50,price:2425,location:"Sonipat, Haryana",quality:"Premium",emoji:"🌾"},
+    {id:2,name:"Rice",qty:30,price:3100,location:"Karnal, Haryana",quality:"Standard",emoji:"🍚"},
+    {id:3,name:"Mustard",qty:20,price:5950,location:"Rohtak, Haryana",quality:"Premium",emoji:"🌿"}
+  ];
+  let orders = [
+    {id:1001,crop:"Wheat",qty:10,total:24250,buyer:"Sharma Grain Traders",status:"Pending"},
+    {id:1002,crop:"Rice",qty:5,total:15500,buyer:"Fresh Foods Buyer",status:"Confirmed"}
+  ];
+  let transactions = [];
+
+  const $ = id => document.getElementById(id);
+  const money = amount => "₹" + Number(amount).toLocaleString("en-IN");
+  const icons = {Wheat:"🌾",Rice:"🍚",Mustard:"🌿",Maize:"🌽",Onion:"🧅",Potato:"🥔",Other:"🌱"};
+
+  function showPage(pageName){
+    document.querySelectorAll(".page").forEach(page => page.classList.toggle("active",page.id===pageName));
+    document.querySelectorAll("nav button").forEach(btn => btn.classList.toggle("active",btn.dataset.page===pageName));
+    if(pageName==="market") renderMarket();
+    if(pageName==="orders") renderOrders();
+    if(pageName==="payments") renderPayments();
+  }
+  document.querySelectorAll("nav button").forEach(btn => btn.addEventListener("click",()=>showPage(btn.dataset.page)));
+
+  function updateStats(){
+    $("statProducts").textContent=products.length;
+    $("statOrders").textContent=orders.length;
+    $("statSales").textContent=money(transactions.reduce((sum,t)=>sum+t.amount,0));
+  }
+
+  function renderMarket(){
+    const search=$("search").value.trim().toLowerCase();
+    const filter=$("filter").value;
+    const sort=$("sort").value;
+    let list=products.filter(p=>p.name.toLowerCase().includes(search)&&(!filter||p.name===filter));
+    if(sort==="low") list.sort((a,b)=>a.price-b.price);
+    if(sort==="high") list.sort((a,b)=>b.price-a.price);
+    $("marketList").innerHTML=list.length ? list.map(p=>`
+      <article class="crop-card">
+        <div class="crop-image">${p.emoji}</div>
+        <h3>${escapeHTML(p.name)}</h3>
+        <div class="muted">${p.qty} quintals available</div>
+        <div class="price-tag">${money(p.price)} <span class="muted">/ quintal</span></div>
+        <div class="muted">${escapeHTML(p.location)}</div>
+        <p><span class="pill">${escapeHTML(p.quality)}</span></p>
+        <button class="primary" onclick="requestOrder(${p.id})">Contact / Order</button>
+      </article>`).join("") : `<p class="muted">No products found. Try another search.</p>`;
+  }
+
+  function requestOrder(productId){
+    const product=products.find(p=>p.id===productId);
+    if(!product)return;
+    const quantity=Number(prompt(`Enter quantity in quintals (maximum ${product.qty}):`));
+    if(!Number.isFinite(quantity)||quantity<=0||quantity>product.qty){alert("Please enter a valid quantity.");return;}
+    const buyer=prompt("Enter buyer or trader name:");
+    if(!buyer||!buyer.trim())return;
+    orders.push({id:Date.now(),crop:product.name,qty:quantity,total:quantity*product.price,buyer:buyer.trim(),status:"Pending"});
+    alert("Order request added to this demo.");
+    updateStats();
+    showPage("orders");
+  }
+
+  $("sellForm").addEventListener("submit",event=>{
+    event.preventDefault();
+    const name=$("cropName").value;
+    const qty=Number($("cropQty").value);
+    const price=Number($("cropPrice").value);
+    const location=$("cropLocation").value.trim();
+    const quality=$("cropQuality").value;
+    if(!name||qty<=0||price<=0||!location){$("sellMessage").textContent="Please enter all required details.";return;}
+    products.unshift({id:Date.now(),name,qty,price,location,quality,emoji:icons[name]||"🌱"});
+    $("sellMessage").textContent="✓ Your crop listing has been published in this demo.";
+    event.target.reset();
+    updateStats();
+  });
+
+  function renderOrders(){
+    $("orderList").innerHTML=orders.length?orders.map(order=>`
+      <article class="order">
+        <div class="order-top"><b>${escapeHTML(order.crop)} · ${order.qty} quintals</b><span class="pill">${order.status}</span></div>
+        <p class="muted">Order #${order.id} · Buyer: ${escapeHTML(order.buyer)}</p>
+        <b>${money(order.total)}</b>
+        <div class="actions">
+          ${order.status==="Pending"?`<button class="primary" onclick="changeOrder(${order.id},'Confirmed')">Accept order</button><button class="secondary" onclick="changeOrder(${order.id},'Declined')">Decline</button>`:""}
+          ${order.status==="Confirmed"?`<button class="primary" onclick="completeOrder(${order.id})">Mark completed</button>`:""}
+        </div>
+      </article>`).join(""):`<p class="muted">No orders yet.</p>`;
+  }
+
+  function changeOrder(id,status){
+    const order=orders.find(o=>o.id===id);
+    if(order){order.status=status;renderOrders();updateStats();}
+  }
+
+  function completeOrder(id){
+    const order=orders.find(o=>o.id===id);
+    if(!order||order.status!=="Confirmed")return;
+    order.status="Completed";
+    transactions.push({id:order.id,crop:order.crop,amount:order.total});
+    renderOrders();renderPayments();updateStats();
+    alert("Order marked completed in the demo. No real payment was transferred.");
+  }
+
+  function renderPayments(){
+    const total=transactions.reduce((sum,t)=>sum+t.amount,0);
+    $("earnings").textContent=money(total);
+    $("transactions").innerHTML=transactions.length?transactions.map(t=>`
+      <div class="transaction"><span>Order #${t.id} · ${escapeHTML(t.crop)}</span><b>${money(t.amount)}</b></div>`).join(""):"No completed transactions yet.";
+  }
+
+  function escapeHTML(value){
+    return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+  }
+
+  $("search").addEventListener("input",renderMarket);
+  $("filter").addEventListener("change",renderMarket);
+  $("sort").addEventListener("change",renderMarket);
+
+  updateStats();
+  renderMarket();
+  renderOrders();
+  renderPayments();
+</script>
+</body>
+</html>
